@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { EventModel } from '../models/event.model';
+import { NextFunction, Request, Response } from "express";
+import { EventModel } from "../models/event.model";
 
 let events: EventModel[] = [];
 
@@ -19,32 +19,63 @@ export const getEventById = (req: Request, res: Response) => {
   if (event) {
     res.json(event);
   } else {
-    res.status(404).json({ message: 'Event not found' });
+    res.status(404).json({ message: "Event not found" });
   }
 };
 
-export const subscribeToEvent = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const event = events.find((e) => e.id === id);
-  if (!event) return res.status(404).json({ message: 'Event not found' });
+export const subscribeToEvent = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    try {
+      const { id } = req.params;
+      const event = events.find((e) => e.id === id);
+  
+      if (!event) {
+        res.status(404).json({ message: "Event not found" });
+        return;
+      }
+  
+      if (event.spotsLeft > 0) {
+        event.spotsLeft--;
+        res.status(200).json({
+          message: "Successfully subscribed",
+          spotsLeft: event.spotsLeft,
+        });
+      } else {
+        res.status(400).json({ message: "No spots left" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  if (event.spotsLeft > 0) {
-    event.spotsLeft--;
-    res.json({ message: 'Successfully subscribed', spotsLeft: event.spotsLeft });
-  } else {
-    res.status(400).json({ message: 'No spots left' });
-  }
-};
-
-export const unsubscribeFromEvent = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const event = events.find((e) => e.id === id);
-  if (!event) return res.status(404).json({ message: 'Event not found' });
-
-  if (event.spotsLeft < event.capacity) {
-    event.spotsLeft++;
-    res.json({ message: 'Successfully unsubscribed', spotsLeft: event.spotsLeft });
-  } else {
-    res.status(400).json({ message: 'Already at full capacity' });
-  }
-};
+  export const unsubscribeFromEvent = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void => {
+    try {
+      const { id } = req.params;
+      const event = events.find((e) => e.id === id);
+  
+      if (!event) {
+        res.status(404).json({ message: "Event not found" });
+        return;
+      }
+  
+      if (event.spotsLeft < event.capacity) {
+        event.spotsLeft++;
+        res.status(200).json({
+          message: "Successfully unsubscribed",
+          spotsLeft: event.spotsLeft,
+        });
+      } else {
+        res.status(400).json({ message: "Already at full capacity" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+  
