@@ -24,7 +24,7 @@ Esta es la API para el proyecto de gestión de eventos/conferencias. Soporta:
 1. Clona el repositorio:
 
 ```bash
-git clone https://github.com/tu_usuario/conference-api.git
+git clone https://github.com/AntonyJDC/conference-api.git
 cd conference-api
 ```
 
@@ -114,5 +114,5 @@ src/
 
 ## 📬 Contacto
 
-Proyecto académico — desarrollado por [Tu Nombre].  
+Proyecto académico — desarrollado por Antony Dominguez.
 Basado en requisitos de la Universidad del Norte.
