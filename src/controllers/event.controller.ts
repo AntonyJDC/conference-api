@@ -1,5 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import Event from "../models/event.model"; // Modelo de MongoDB
+import Event from "../models/event.model";
+
+function generateNextId(lastId: string): string {
+  const num = parseInt(lastId.replace('evt', ''), 10);
+  const nextNum = num + 1;
+  return `evt${String(nextNum).padStart(3, '0')}`;
+}
 
 export const getAllEvents = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -12,7 +18,39 @@ export const getAllEvents = async (req: Request, res: Response, next: NextFuncti
 
 export const createEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const newEvent = new Event(req.body);
+    const lastEvent = await Event.findOne().sort({ id: -1 });
+
+    let newId = 'evt001';
+    if (lastEvent && lastEvent.id) {
+      newId = generateNextId(lastEvent.id);
+    }
+
+    const {
+      title,
+      description,
+      date,
+      startTime,
+      endTime,
+      location,
+      imageUrl,
+      capacity,
+      categories,
+    } = req.body;
+
+    const newEvent = new Event({
+      id: newId,
+      title,
+      description,
+      date,
+      startTime,
+      endTime,
+      location,
+      imageUrl,
+      capacity,
+      spotsLeft: capacity,
+      categories,
+    });
+
     await newEvent.save();
     res.status(201).json(newEvent);
   } catch (error) {
