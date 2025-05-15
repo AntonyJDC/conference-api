@@ -5,6 +5,8 @@ import { connectDB } from './database/mongo';
 
 import eventRoutes from './routes/event.routes';
 import favoriteRoutes from './routes/favorite.routes';
+import bookedEventRoutes from './routes/booked_event.routes';
+import reviewRoutes from './routes/review.routes';
 
 dotenv.config();
 
@@ -17,7 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/events', eventRoutes);
-app.use('/api/events', favoriteRoutes);   
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/bookeds', bookedEventRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
   res.send('Conference API running with MongoDB 🚀');
