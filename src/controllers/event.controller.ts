@@ -125,3 +125,41 @@ export const unsubscribeFromEvent = async (req: Request, res: Response, next: Ne
     next(error);
   }
 };
+
+export const updateEvent = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    const updatedEvent = await Event.findOneAndUpdate(
+      { id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedEvent) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+    res.status(200).json(updatedEvent);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await Event.findOneAndDelete({ id });
+
+    if (!deleted) {
+      res.status(404).json({ message: "Event not found" });
+      return;
+    }
+    res.status(200).json({ message: "Event deleted successfully" });
+
+  } catch (error) {
+    next(error);
+  }
+};
