@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Event from "../models/event.model";
+import Version from "../models/version.model";
 
 function generateNextId(lastId: string): string {
   const num = parseInt(lastId.replace('evt', ''), 10);
@@ -53,6 +54,12 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
 
     await newEvent.save();
     res.status(201).json(newEvent);
+
+    await Version.updateOne(
+      { key: 'events' },
+      { $inc: { value: 1 } },
+      { upsert: true }
+    );
   } catch (error) {
     next(error);
   }
@@ -95,6 +102,12 @@ export const subscribeToEvent = async (req: Request, res: Response, next: NextFu
     } else {
       res.status(400).json({ message: "No spots left" });
     }
+
+    await Version.updateOne(
+      { key: 'events' },
+      { $inc: { value: 1 } },
+      { upsert: true }
+    );
   } catch (error) {
     next(error);
   }
@@ -121,6 +134,12 @@ export const unsubscribeFromEvent = async (req: Request, res: Response, next: Ne
     } else {
       res.status(400).json({ message: "Already at full capacity" });
     }
+
+    await Version.updateOne(
+      { key: 'events' },
+      { $inc: { value: 1 } },
+      { upsert: true }
+    );
   } catch (error) {
     next(error);
   }
@@ -141,11 +160,16 @@ export const updateEvent = async (req: Request, res: Response, next: NextFunctio
       return;
     }
     res.status(200).json(updatedEvent);
+
+    await Version.updateOne(
+      { key: 'events' },
+      { $inc: { value: 1 } },
+      { upsert: true }
+    );
   } catch (error) {
     next(error);
   }
 };
-
 
 export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -159,6 +183,11 @@ export const deleteEvent = async (req: Request, res: Response, next: NextFunctio
     }
     res.status(200).json({ message: "Event deleted successfully" });
 
+    await Version.updateOne(
+      { key: 'events' },
+      { $inc: { value: 1 } },
+      { upsert: true }
+    );
   } catch (error) {
     next(error);
   }
