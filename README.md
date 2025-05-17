@@ -4,7 +4,6 @@ Esta es la API para el proyecto de gestión de eventos/conferencias. Soporta:
 
 - Gestión de eventos
 - Suscripción a eventos
-- Favoritos
 - Reseñas anónimas
 - Sincronización con app Flutter (SQLite local)
 
@@ -73,26 +72,8 @@ src/
 | `GET` | `/api/events/:id` | Obtener un evento por ID |
 | `POST` | `/api/events/:id/subscribe` | Suscribirse a un evento (resta cupo) |
 | `POST` | `/api/events/:id/unsubscribe` | Cancelar suscripción (aumenta cupo) |
-
----
-
-### ⭐ Favoritos
-
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `POST` | `/api/events/:id/favorite` | Agregar a favoritos |
-| `DELETE` | `/api/events/:id/favorite` | Quitar de favoritos |
-| `GET` | `/api/events/favorites` | Obtener lista de favoritos (solo IDs) |
-
----
-
-### 📅 Eventos Reservados
-
-| Método | Ruta | Descripción |
-|--------|------|-------------|
-| `POST` | `/api/events/:id/book` | Reservar (marcar como inscrito) |
-| `DELETE` | `/api/events/:id/book` | Cancelar reserva |
-| `GET` | `/api/events/booked` | Obtener lista de eventos reservados (IDs) |
+| `PUT` | `/api/events/:id/` | Actualizar los datos del evento |
+| `DELETE` | `/api/events/:id/` | Eliminar un evento |
 
 ---
 
@@ -100,8 +81,8 @@ src/
 
 | Método | Ruta | Descripción |
 |--------|------|-------------|
-| `POST` | `/api/events/:id/reviews` | Crear una reseña para un evento |
-| `GET` | `/api/events/:id/reviews` | Ver reseñas de un evento |
+| `POST` | `/api/reviews/:id/create` | Crear una reseña para un evento |
+| `GET` | `/api/reviews/:id/get` | Ver reseñas de un evento |
 
 ---
 
