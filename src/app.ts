@@ -2,10 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectDB } from './database/mongo';
-
 import eventRoutes from './routes/event.routes';
-import favoriteRoutes from './routes/favorite.routes';
-import bookedEventRoutes from './routes/booked_event.routes';
 import reviewRoutes from './routes/review.routes';
 import versionRoutes from './routes/version.routes';
 
@@ -20,8 +17,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/events', eventRoutes);
-app.use('/api/favorites', favoriteRoutes);
-app.use('/api/bookeds', bookedEventRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api', versionRoutes);
 
