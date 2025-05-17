@@ -6,7 +6,7 @@ import {
 
 const router = Router();
 
-router.post('/:id/reviews', createReview);
-router.get('/:id/reviews', getReviewsByEvent);
+router.post('/:id/create', createReview);
+router.get('/:id/get', getReviewsByEvent);
 
 export default router;
