@@ -5,6 +5,7 @@ import { connectDB } from './database/mongo';
 import eventRoutes from './routes/event.routes';
 import reviewRoutes from './routes/review.routes';
 import versionRoutes from './routes/version.routes';
+import stat from './routes/stats.routes';
 
 dotenv.config();
 
@@ -19,9 +20,10 @@ app.use(express.json());
 app.use('/api/events', eventRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api', versionRoutes);
+app.use('/api/stats', stat)
 
-app.get('/', (req, res) => {
-  res.send('Conference API running with MongoDB 🚀');
+app.get('/stats', (req, res) => {
+  res.status(200).json({ test: 'ok' });
 });
 
 // Middleware de errores
