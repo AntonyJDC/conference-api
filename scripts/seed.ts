@@ -82,17 +82,16 @@ const commentSamples: { [key: string]: string[] } = {
 };
 
 const generateReviews = (eventId: string): any[] => {
-    const count = Math.floor(Math.random() * 8) + 3; // entre 3 y 10 reviews
+    const count = Math.floor(Math.random() * 8) + 3;
     const reviews = [];
 
     for (let i = 0; i < count; i++) {
-        const rating = parseFloat((Math.random() * 5).toFixed(1)); // de 0.0 a 5.0
-
+        const rating = Math.floor(Math.random() * 5) + 1;
         let commentCategory: string;
-        if (rating >= 4.5) commentCategory = 'excellent';
-        else if (rating >= 3.5) commentCategory = 'good';
-        else if (rating >= 2.5) commentCategory = 'average';
-        else if (rating >= 1.5) commentCategory = 'bad';
+        if (rating >= 5) commentCategory = 'excellent';
+        else if (rating >= 4) commentCategory = 'good';
+        else if (rating >= 3) commentCategory = 'average';
+        else if (rating >= 2) commentCategory = 'bad';
         else commentCategory = 'terrible';
 
         const comments = commentSamples[commentCategory];
