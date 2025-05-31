@@ -18,6 +18,12 @@ initializeApp({
 });
 const bucket = getStorage().bucket();
 
+function randomPastDate() {
+    const now = new Date();
+    const past = new Date(now.getTime() - Math.floor(Math.random() * 1000 * 60 * 60 * 24 * 180)); // hasta 180 días atrás
+    return past;
+}
+
 const commentSamples: { [key: string]: string[] } = {
     excellent: [
         '¡Excelente evento! Todo estuvo perfectamente organizado.',
@@ -87,6 +93,7 @@ const generateReviews = (eventId: string): any[] => {
 
     for (let i = 0; i < count; i++) {
         const rating = Math.floor(Math.random() * 5) + 1;
+
         let commentCategory: string;
         if (rating >= 5) commentCategory = 'excellent';
         else if (rating >= 4) commentCategory = 'good';
@@ -102,7 +109,7 @@ const generateReviews = (eventId: string): any[] => {
             eventId,
             rating,
             comment,
-            createdAt: new Date().toISOString(),
+            createdAt: randomPastDate().toISOString(), // 👈 aquí se agrega fecha aleatoria
         });
     }
 
